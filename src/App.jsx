@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import clsx from 'clsx';
+import { ThemeProvider, useTheme } from '../src/context/ThemeProvider';
+import { ToggleThemeButton } from './components/ToggleThemeButton';
+import { MemorySection } from './Components/Memory/MemorySection';
 
-function App() {
-  const [count, setCount] = useState(0)
+const AppWithTheme = ({ children }) => {
+  const { isDark } = useTheme();
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div
+      id="app"
+      className={clsx({
+        dark: isDark,
+      })}
+    >
+      {children}
     </div>
-  )
-}
+  );
+};
 
-export default App
+const App = () => (
+  <ThemeProvider>
+    <AppWithTheme>
+      <div className="m-auto h-screen">
+        <ToggleThemeButton />
+        <MemorySection />
+      </div>
+    </AppWithTheme>
+  </ThemeProvider>
+);
+
+export default App;
